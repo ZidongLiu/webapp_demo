@@ -1,0 +1,35 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    div {width:100px; height:100px; background:red; border: solid black 1px; opacity: 0.3; float: left; margin:10px;}
+</style>
+<script src="js/motion.js">
+</script>
+<script>
+    window.onload = function(){
+        var styles = ['width', 'height', 'opacity'];
+        var onTarget = [200, 200, 1];
+        var outTarget = [100, 100, 0.3];
+        var aDivs = document.getElementsByTagName('div');
+        for(var i=0;i<aDivs.length;i++){
+            aDivs[i].index = i;
+            aDivs[i].onmouseover = function(){
+                move(this, styles[this.index], onTarget[this.index]);
+            };
+            aDivs[i].onmouseout = function(){
+                move(this, styles[this.index], outTarget[this.index]);
+            }
+        }
+    }
+</script>
+<body>
+    <div></div>
+    <div></div>
+    <div></div>
+</body>
+</html>

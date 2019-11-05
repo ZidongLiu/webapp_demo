@@ -1,0 +1,40 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    #showBtn {width:50px; height:50px; background:red;position:fixed; bottom: 0px; right:0px;z-index:3}
+    #horizontalBar {width:200px; height:50px; background:green;position:fixed; bottom: 0px; right:-200px; z-index:2}
+    #bigBox {width:248px; height:298px; border:solid 1px black;position:fixed; bottom: -300px; right:0px; z-index:1}
+    #closeBtn {width:20px; height:20px; position:absolute; top: 0px; right:0px; z-index:1}
+</style>
+<script src="js/motion.js"></script>
+<script>
+    window.onload=function(){
+        var showBtn = document.getElementById('showBtn');
+        var horizontalBar = document.getElementById('horizontalBar');
+        var bigBox = document.getElementById('bigBox');
+        var closeBtn = document.getElementById('closeBtn');
+        showBtn.onclick = function(){
+            move(horizontalBar, 'right', 50, function(){
+                move(bigBox, 'bottom', 50)
+            })
+        }
+        closeBtn.onclick = function(){
+            move(bigBox, 'bottom', -300, function(){
+                move(horizontalBar, 'right', -200)
+            })
+        }
+    }
+</script>
+<body>
+    <div id="showBtn"></div>
+    <div id="horizontalBar"></div>
+    <div id="bigBox">
+        <input type="button" value="X" id="closeBtn">
+    </div>
+</body>
+</html>

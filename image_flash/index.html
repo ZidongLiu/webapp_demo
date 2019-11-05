@@ -1,35 +1,138 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
+
 <style>
-    div {width:100px; height:100px; background:red; border: solid black 1px; opacity: 0.3; float: left; margin:10px;}
+    #bigPic {width:400; height:600; position: relative; top:0; left:0; list-style:none; border: solid black 1px; padding: 0px}
+    #bigPic #leftArrow {width:60; height:60; position: absolute; top: 270; left:0; opacity: 0; z-index: 3001; background: red}
+    #bigPic #rightArrow {width:60; height:60; position: absolute; top: 270; right:0; opacity: 0; z-index:3001; background:red}
+    #bigPic #leftMask {width:200; height:600; position: absolute; top: 0; left:0; opacity: 0;z-index: 3000; background:red}
+    #bigPic #rightMask {width:200; height:600; position: absolute; top: 0; right:0; opacity: 0;z-index:3000; background:red}
+    #bigPic li {width:400; height:600; position: absolute; top:0; left:0; z-index: 0}
+
+    #smallPic {width: 360; height:120; overflow: hidden; border:solid 1px black;}
+    #smallPic ul {width: 720; height:120; list-style:none; padding:0; margin:0;position:relative;}
+    #smallPic li {width: 100; height:100; float:left; margin:10px; opacity: 0.5;}
 </style>
-<script src="js/motion.js">
-</script>
+
+<script src="js/motion.js"></script>
 <script>
-    window.onload = function(){
-        var styles = ['width', 'height', 'opacity'];
-        var onTarget = [200, 200, 1];
-        var outTarget = [100, 100, 0.3];
-        var aDivs = document.getElementsByTagName('div');
-        for(var i=0;i<aDivs.length;i++){
-            aDivs[i].index = i;
-            aDivs[i].onmouseover = function(){
-                move(this, styles[this.index], onTarget[this.index]);
-            };
-            aDivs[i].onmouseout = function(){
-                move(this, styles[this.index], outTarget[this.index]);
+    window.onload=function(){
+        var cur_img_index = 1;
+        var cur_z_index = 1;
+        
+        
+        var leftArrow = document.getElementById('leftArrow');
+        var rightArrow = document.getElementById('rightArrow');
+        leftArrow.onmouseover = function(){move(leftArrow, 'opacity', 1)};
+        leftArrow.onmouseout = function(){move(leftArrow, 'opacity', 0)};
+        rightArrow.onmouseover = function(){move(rightArrow, 'opacity', 1)};
+        rightArrow.onmouseout = function(){move(rightArrow, 'opacity', 0)};
+        
+        
+        var leftMask = document.getElementById('leftMask');
+        var rightMask = document.getElementById('rightMask');
+        leftMask.onmouseover = function(){move(leftArrow, 'opacity', 1)};
+        leftMask.onmouseout = function(){move(leftArrow, 'opacity', 0)};
+        rightMask.onmouseover = function(){move(rightArrow, 'opacity', 1)};
+        rightMask.onmouseout = function(){move(rightArrow, 'opacity', 0)};
+
+
+        var bigPic = document.getElementById('bigPic');
+        var bigPicLis = bigPic.getElementsByTagName('li');
+        bigPicLis[cur_img_index].style.zIndex = cur_z_index;
+
+        var smallPic = document.getElementById('smallPic');
+        var smallPicUl = document.getElementById('smallPicUl');
+        var smallPicLis = smallPicUl.getElementsByTagName('li');
+        smallPicLis[cur_img_index].style['opacity'] = 1;
+        function changePic(target_img_idx){
+            if(target_img_idx == cur_img_index){
+                return;
+            }else{
+                move(smallPicLis[target_img_idx], 'opacity', 1)
+                move(smallPicLis[cur_img_index], 'opacity', 0.5);
+                cur_img_index = target_img_idx;
+                var offset_multiplier = 0;
+                if(cur_img_index==0){
+                    offset_multiplier = 0;
+                }else if(cur_img_index==smallPicLis.length - 1){
+                    offset_multiplier = smallPicLis.length - 3;
+                }else{
+                    offset_multiplier = cur_img_index - 1
+                }
+                move(smallPicUl, 'left', -offset_multiplier * 120);
+                
+                bigPicLis[target_img_idx].style['z-index'] = ++cur_z_index;
+                bigPicLis[target_img_idx].style['opacity'] = 0;
+                move(bigPicLis[target_img_idx], 'opacity', 1);
             }
         }
+        leftArrow.onclick = function(){
+            if(cur_img_index == 0){
+                target_index = bigPicLis.length - 1;
+            }else{
+                target_index = cur_img_index - 1;
+            }
+            changePic(target_index);
+        }
+        rightArrow.onclick = function(){
+            if(cur_img_index == bigPicLis.length - 1){
+                target_index = 0;
+            }else{
+                target_index = cur_img_index + 1;
+            }
+            changePic(target_index);
+        }
+        for(var i=0;i<smallPicLis.length;i++){
+            smallPicLis[i].index = i;
+            smallPicLis[i].onmouseover = function(){
+                if(this.index == cur_img_index){
+                    return;
+                }else{
+                    move(this, 'opacity', 1)
+                }
+            };
+            smallPicLis[i].onclick = function(){changePic(this.index)};
+            smallPicLis[i].onmouseout = function(){
+                if(this.index == cur_img_index){
+                    return;
+                }else{
+                    move(this, 'opacity', 0.5)
+                }
+            };
+        }
     }
+    
 </script>
 <body>
-    <div></div>
-    <div></div>
-    <div></div>
+    <div>
+        <ul id="bigPic">
+            <div id="leftArrow"></div>
+            <div id="rightArrow"></div>
+            <div id="leftMask"></div>
+            <div id="rightMask"></div>
+            <li><img src="./imgs/image1.jpeg"></li>
+            <li><img src="./imgs/image2.jpeg"></li>
+            <li><img src="./imgs/image3.jpeg"></li>
+            <li><img src="./imgs/image4.jpeg"></li>
+            <li><img src="./imgs/image5.jpeg"></li>
+            <li><img src="./imgs/image6.jpeg"></li>
+        </ul>
+        <div id="smallPic">
+            <ul id="smallPicUl">
+                <li><img src="./imgs/image1_small.jpeg"></li>
+                <li><img src="./imgs/image2_small.jpeg"></li>
+                <li><img src="./imgs/image3_small.jpeg"></li>
+                <li><img src="./imgs/image4_small.jpeg"></li>
+                <li><img src="./imgs/image5_small.jpeg"></li>
+                <li><img src="./imgs/image6_small.jpeg"></li>
+            </ul>
+        </div>
+    </div>
 </body>
 </html>

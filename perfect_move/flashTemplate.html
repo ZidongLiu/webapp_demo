@@ -1,0 +1,100 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="./js/motion.js"></script>
+<script>
+    function getSlides(n, targetWidth, targetHeight){
+        var colorList = [
+            'red', 'green', 'yellow', 'black', 'pink', 'blue', 'orange'
+        ]
+        var retDiv = document.createElement('div');
+        retDivStyle = {
+            width: parseInt(targetWidth) + 'px',
+            height: parseInt(targetHeight) + 'px',
+            overflow: 'hidden',
+            border: 'solid 1px black',
+            position: 'relative',
+        }
+        setStyle(retDiv, retDivStyle);
+        
+        var backgroundUl = document.createElement('ul');
+        retDiv.appendChild(backgroundUl);
+        backgroundUlStyle = {
+            width: parseInt(targetWidth) + 'px',
+            height: parseInt(targetHeight) * n + 'px',
+            'list-style': 'none',
+            position: 'absolute',
+            margin: '0px',
+            top: '1px',
+            left: '1px',
+            padding: '0px'
+        }
+        setStyle(backgroundUl, backgroundUlStyle);
+        backgroundLiStyle = {
+            width: parseInt(targetWidth) + 'px',
+            height: parseInt(targetHeight) + 'px',
+            float: 'top'
+        }
+        for(var i=0;i<n;i++){
+            var oLi = document.createElement('li');
+            var colorIndex = i % colorList.length;
+            setStyle(oLi, backgroundLiStyle);
+            oLi.style['background'] = colorList[colorIndex];
+            backgroundUl.appendChild(oLi);
+        }
+
+        var tagOl = document.createElement('ol');
+        retDiv.appendChild(tagOl);
+        tagOlStyle = {
+            width: 72 * n + 'px',
+            height: '52px',
+            'list-style': 'none',
+            position: 'absolute',
+            margin: '0px',
+            bottom: '10px',
+            right: '0px',
+            padding: '0px'
+        }
+        setStyle(tagOl, tagOlStyle);
+        tagLiStyle = {
+            margin: '10px',
+            width: '10px',
+            height: '10px',
+            float: 'left',
+            padding: '20px', 
+            'text-align': 'center',
+            border: 'solid 1px black'
+        }
+        for(var i=0;i<n;i++){
+            var oLi = document.createElement('li');
+            oLi.index = i;
+            oLi.innerHTML = '' + i;
+            setStyle(oLi, tagLiStyle);
+            oLi.onclick = function(){
+                console.log(this.index)
+                move(backgroundUl, {top: 1-this.index * targetHeight})
+            }
+            tagOl.appendChild(oLi);
+            
+        }
+        return retDiv;
+    }
+
+    function setStyle(obj, styleJson){
+        for(var styleName in styleJson){
+            obj.style[styleName] = styleJson[styleName];
+        }
+    }
+    
+    window.onload = function(){
+        document.body.appendChild(getSlides(3, 600, 100));
+    }
+</script>
+<body>
+    
+</body>
+</html>

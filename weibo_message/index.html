@@ -1,0 +1,48 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    * {margin:0; padding:0;}
+    #txtDiv {background: white; border:1px solid black; overflow: hidden; position:relative; top: 100px; left:400px;}
+    #txtUl {height: 400px; width:400px; border:1px solid black; margin: 10px auto; list-style:none;}
+    #txtUl li {border-bottom: 1px dashed grey; float:top; overflow:hidden}
+</style>
+<script src="../helper.js"></script>
+<script>
+    window.onload = function(){
+        var userInput = document.getElementById('userInput');
+        var addTxt = document.getElementById("addTxt");
+        var txtDiv = document.getElementById('txtDiv');
+        addTxt.onclick=function(){
+            var txt = userInput.value;
+            var li =document.createElement('li');
+            li.innerHTML = txt;
+            console.log(txt);
+            if(txtUl.children.length == 0){
+                txtUl.appendChild(li);
+            }else{
+                txtUl.insertBefore(li, txtUl.children[0]);
+            }
+            
+            var liHeight = li.offsetHeight;
+            li.style['height'] = '0px';
+            li.style['opacity'] = 0.3;
+            move(li, {height:liHeight}, function(){
+                move(li, {opacity:1});
+            });
+            
+        }
+    }
+</script>
+<body>
+    <textarea id="userInput"cols="40" rows="5"></textarea>
+    <button id="addTxt">send</button>
+    <ul id="txtUl">
+
+    </ul>
+</body>
+</html>

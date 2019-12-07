@@ -1,0 +1,23 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    #div1 {width: 200px; height:200px; background: yellow; position: absolute;}
+    #div2 {width: 200px; height:200px; background: red; position: absolute;}
+</style>
+<script src = "drag.js"></script>
+<script>
+    window.onload = function(){
+        new drag('div1');
+        new drag('div2');
+    }
+</script>
+<body>
+    <div id="div1">aasdasda</div>
+    <div id="div2">qweqwewqewq</div>
+</body>
+</html>
